@@ -46,14 +46,15 @@ const App = () => {
   const { pricingFilters, searchQuery, visibleItems, data } = useSelector(
     (state) => state.app
   );
-
+  console.log({ pricingFilters, searchQuery, visibleItems, data });
+  
   // Initialize filters from URL params
   useEffect(() => {
     const pricing = searchParams.get("pricing");
     const search = searchParams.get("search");
 
     if (pricing) {
-      dispatch(setPricingFilters(pricing.split(",")));
+      dispatch(setPricingFilters(pricing.split(",").map(n=> Number(n))));
     }
     if (search) {
       dispatch(setSearchQuery(search));
@@ -135,19 +136,21 @@ const App = () => {
     },
     [dispatch]
   );
-
+  console.log({filteredItems});
   return (
     <div>
       <FilterContainer>
         <div className="filter-group">
-          {["Paid", "Free", "View Only"].map((option) => (
+          {["Paid", "Free", "View Only"].map((option,index) => (
             <button
               key={option}
               className={pricingFilters.includes(option) ? "active" : ""}
-              onClick={() => handleFilterClick(option)}
+              onClick={() => handleFilterClick(index)}
             >
               {option}
             </button>
+
+            
           ))}
           <button onClick={handleResetFilters}>Reset Filters</button>
         </div>
