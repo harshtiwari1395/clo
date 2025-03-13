@@ -1,5 +1,5 @@
 // src/App.js
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
@@ -46,6 +46,19 @@ const App = () => {
   const { pricingFilters, searchQuery, visibleItems, data } = useSelector(
     (state) => state.app
   );
+
+  // Initialize filters from URL params
+  useEffect(() => {
+    const pricing = searchParams.get("pricing");
+    const search = searchParams.get("search");
+
+    if (pricing) {
+      dispatch(setPricingFilters(pricing.split(",")));
+    }
+    if (search) {
+      dispatch(setSearchQuery(search));
+    }
+  }, [dispatch, searchParams]);
 
   // Fetch data
   useEffect(() => {
@@ -101,34 +114,49 @@ const App = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [dispatch]);
 
+  // Event handlers
+  const handleFilterClick = useCallback(
+    (option) => {
+      const newFilters = pricingFilters.includes(option)
+        ? pricingFilters.filter((f) => f !== option)
+        : [...pricingFilters, option];
+      dispatch(setPricingFilters(newFilters));
+    },
+    [pricingFilters, dispatch]
+  );
+
+  const handleResetFilters = useCallback(() => {
+    dispatch(resetFilters());
+  }, [dispatch]);
+
+  const handleSearchChange = useCallback(
+    (e) => {
+      dispatch(setSearchQuery(e.target.value));
+    },
+    [dispatch]
+  );
+
   return (
     <div>
       <FilterContainer>
         <div className="filter-group">
-          {["Paid", "Free", "View Only"].map((option, index) => (
+          {["Paid", "Free", "View Only"].map((option) => (
             <button
               key={option}
-              className={pricingFilters.includes(index) ? "active" : ""}
-              onClick={() => {
-                const newFilters = pricingFilters.includes(index)
-                  ? pricingFilters.filter((f) => f !== index)
-                  : [...pricingFilters, index];
-                dispatch(setPricingFilters(newFilters));
-              }}
+              className={pricingFilters.includes(option) ? "active" : ""}
+              onClick={() => handleFilterClick(option)}
             >
               {option}
             </button>
           ))}
-          <button onClick={() => dispatch(resetFilters())}>
-            Reset Filters
-          </button>
+          <button onClick={handleResetFilters}>Reset Filters</button>
         </div>
 
         <input
           type="text"
           placeholder="Search creators or titles..."
           value={searchQuery}
-          onChange={(e) => dispatch(setSearchQuery(e.target.value))}
+          onChange={handleSearchChange}
           className="search-input"
         />
       </FilterContainer>
