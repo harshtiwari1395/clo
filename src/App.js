@@ -141,16 +141,15 @@ const App = () => {
     <div>
       <FilterContainer>
         <div className="filter-group">
-          {["Paid", "Free", "View Only"].map((option,index) => (
-            <button
-              key={option}
-              className={pricingFilters.includes(option) ? "active" : ""}
-              onClick={() => handleFilterClick(index)}
-            >
+          {["Paid", "Free", "View Only"].map((option, index) => (
+            <label key={option}>
+              <input
+                type="checkbox"
+                checked={pricingFilters.includes(index)}
+                onChange={() => handleFilterClick(index)}
+              />
               {option}
-            </button>
-
-            
+            </label>
           ))}
           <button onClick={handleResetFilters}>Reset Filters</button>
         </div>
