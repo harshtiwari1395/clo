@@ -170,10 +170,13 @@ const PricingSliderContainer = styled.div`
 `;
 
 const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 10px;
+  display: flex;
+  flex-wrap: wrap; /* Allow items to wrap to the next line */
+  gap: 20px;
   padding: 20px;
+  justify-content: flex-start; /* Align items to the start */
+  width: 100%; /* Take up full width */
+  box-sizing: border-box; /* Include padding and border in width */
 `;
 
 const App = () => {
@@ -320,12 +323,12 @@ const App = () => {
           </label>
         </FilterGroup>
         <ResetButton onClick={handleResetFilters}>RESET</ResetButton>
-        <SortSection>
+        {/* <SortSection>
           <label>Sort By</label>
           <select>
             <option>Relevance</option>
           </select>
-        </SortSection>
+        </SortSection> */}
       </FilterSection>
 
       <Grid>

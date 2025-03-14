@@ -2,17 +2,30 @@
 import React from "react";
 import styled from "styled-components";
 
-const Card = styled.div`
-  border: 1px solid #ddd;
-  border-radius: 3px;
-  overflow: hidden;
-  background: black;
-  transition: transform 0.2s;
 
-  &:hover {
-    transform: translateY(-2px);
-  }
+
+const GridItem = styled.div`
+    flex: 0 0 calc(25% - 20px); /* Adjust for 4 items per row  */
+    max-width: calc(25% - 20px);
+    box-sizing: border-box;
+    min-width: 320px; /* min width */
+
+    @media (max-width: 1200px) {
+        flex: 0 0 calc(33.33% - 20px); /* 3 items per row for medium screens */
+        max-width: calc(33.33% - 20px);
+    }
+
+    @media (max-width: 768px) {
+        flex: 0 0 calc(50% - 20px); /* 2 items per row for smaller screens */
+        max-width: calc(50% - 20px);
+    }
+
+    @media (max-width: 480px) {
+        flex: 0 0 100%; /* 1 item per row for extra small screens */
+        max-width: 100%;
+    }
 `;
+
 
 const Image = styled.img`
   width: 100%;
@@ -45,7 +58,7 @@ const Price = styled.div`
 `;
 
 const ContentItem = ({ item }) => (
-  <Card>
+  <GridItem>
     <Image src={item.imagePath} alt={item.title} />
     <Content>
       <div>
@@ -62,7 +75,7 @@ const ContentItem = ({ item }) => (
       </Price>
       </div>
     </Content>
-  </Card>
+  </GridItem>
 );
 
 export default ContentItem;
