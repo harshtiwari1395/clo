@@ -43,7 +43,7 @@ const SearchBarContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding: 20px;
+  padding: 20px 0;
 
   .search-wrapper {
     position: relative;
@@ -92,7 +92,7 @@ const FilterSection = styled.div`
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  padding: 20px;
+  padding: 10px;
   border-bottom: 1px solid #333;
 `;
 
@@ -277,15 +277,6 @@ const App = () => {
       <TopBar>
         <h2>CONNECT</h2>
       </TopBar>
-      {/* <SearchBarContainer>
-          <input
-            type="text"
-            placeholder="Find the items you're looking for"
-            value={searchQuery}
-            onChange={handleSearchChange}
-            style={{width:"90%", margin: "auto"}}
-          />
-        </SearchBarContainer> */}
         <SearchBarContainer>
   <div className="search-wrapper">
     <input
