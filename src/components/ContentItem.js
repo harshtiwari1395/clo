@@ -5,18 +5,18 @@ import styled from "styled-components";
 
 
 const GridItem = styled.div`
-    flex: 0 0 calc(25% - 20px); /* Adjust for 4 items per row  */
+    flex: 0 0 calc(25% - 20px); 
     max-width: calc(25% - 20px);
     box-sizing: border-box;
     min-width: 320px; /* min width */
 
     @media (max-width: 1200px) {
-        flex: 0 0 calc(33.33% - 20px); /* 3 items per row for medium screens */
+        flex: 0 0 calc(33.33% - 20px); 
         max-width: calc(33.33% - 20px);
     }
 
     @media (max-width: 768px) {
-        flex: 0 0 calc(50% - 20px); /* 2 items per row for smaller screens */
+        flex: 0 0 calc(50% - 20px); 
         max-width: calc(50% - 20px);
     }
 
@@ -31,6 +31,8 @@ const Image = styled.img`
   width: 100%;
   height: 250px;
   object-fit: cover;
+  border-radius: 4px; 
+  overflow: hidden;
 `;
 
 const Content = styled.div`
