@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 const Card = styled.div`
   border: 1px solid #ddd;
-  border-radius: 8px;
+  border-radius: 3px;
   overflow: hidden;
   background: black;
   transition: transform 0.2s;
@@ -16,7 +16,7 @@ const Card = styled.div`
 
 const Image = styled.img`
   width: 100%;
-  height: 200px;
+  height: 250px;
   object-fit: cover;
 `;
 

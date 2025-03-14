@@ -41,7 +41,7 @@ const TopBar = styled.div`
 const SearchBarContainer = styled.div`
   display: flex;
   align-items: center;
-
+  width: 100%;
   input {
     padding: 8px 16px;
     border-radius: 4px;
@@ -143,7 +143,7 @@ const PricingSliderContainer = styled.div`
 const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 20px;
+  gap: 10px;
   padding: 20px;
 `;
 
@@ -247,16 +247,16 @@ const App = () => {
     <AppContainer>
       <TopBar>
         <h2>CONNECT</h2>
-        <SearchBarContainer>
+      </TopBar>
+      <SearchBarContainer>
           <input
             type="text"
             placeholder="Find the items you're looking for"
             value={searchQuery}
             onChange={handleSearchChange}
+            style={{width:"90%", margin: "auto"}}
           />
         </SearchBarContainer>
-      </TopBar>
-
       <FilterSection>
         <FilterGroup>
           <span> Pricing Option</span>
