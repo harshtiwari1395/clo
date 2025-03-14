@@ -40,23 +40,52 @@ const TopBar = styled.div`
 
 const SearchBarContainer = styled.div`
   display: flex;
+  justify-content: center;
   align-items: center;
   width: 100%;
+  padding: 20px;
+
+  .search-wrapper {
+    position: relative;
+    width: 90%;
+    max-width: 90vw; 
+    display: flex;
+    align-items: center;
+  }
+
   input {
-    padding: 8px 16px;
+    flex-grow: 1; 
+    padding: 10px 40px 10px 15px; 
     border-radius: 4px;
     border: none;
     background-color: #2b2b2b;
     color: #ddd;
-    width: 300px;
+    font-size: 1rem;
+    width: 100%; 
 
     &::placeholder {
       color: #777;
-      font-size: 0.9rem;
       font-style: italic;
+      font-size: 0.9rem;
+    }
+
+    &:focus {
+      outline: none;
+      border: 1px solid #007bff; 
     }
   }
+
+  .search-icon {
+    position: absolute;
+    top: 50%;
+    right: 10px; 
+    transform: translateY(-50%);
+    color: #777; 
+    font-size: 1.2rem; 
+    pointer-events: none; 
+  }
 `;
+
 
 const FilterSection = styled.div`
   display: flex;
@@ -248,7 +277,7 @@ const App = () => {
       <TopBar>
         <h2>CONNECT</h2>
       </TopBar>
-      <SearchBarContainer>
+      {/* <SearchBarContainer>
           <input
             type="text"
             placeholder="Find the items you're looking for"
@@ -256,7 +285,21 @@ const App = () => {
             onChange={handleSearchChange}
             style={{width:"90%", margin: "auto"}}
           />
-        </SearchBarContainer>
+        </SearchBarContainer> */}
+        <SearchBarContainer>
+  <div className="search-wrapper">
+    <input
+      type="text"
+      placeholder="Find the items you're looking for"
+      value={searchQuery}
+      onChange={handleSearchChange}
+    />
+    <span className="search-icon">
+      🔎
+    </span>
+  </div>
+</SearchBarContainer>
+
       <FilterSection>
         <FilterGroup>
           <span> Pricing Option</span>
