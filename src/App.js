@@ -174,6 +174,7 @@ const Grid = styled.div`
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 10px;
   padding: 20px;
+  width: fit-content;
 `;
 
 const App = () => {
