@@ -6,7 +6,7 @@ const Card = styled.div`
   border: 1px solid #ddd;
   border-radius: 8px;
   overflow: hidden;
-  background: white;
+  background: black;
   transition: transform 0.2s;
 
   &:hover {
@@ -21,32 +21,38 @@ const Image = styled.img`
 `;
 
 const Content = styled.div`
+  display: flex;
+  justify-content: space-between;
   padding: 15px;
 `;
 
 const Title = styled.h3`
   margin: 0 0 8px;
-  font-size: 1rem;
-  color: #333;
+  font-size: 0.9rem;
+  color: white;
 `;
 
 const Creator = styled.p`
   margin: 0 0 8px;
   font-size: 0.9rem;
-  color: #666;
+  color: white;
 `;
 
 const Price = styled.div`
   font-weight: bold;
-  color: ${(props) => (props.$type === 0 ? "#2ecc71" : "#e67e22")};
+  font-size: 1.2rem;
+  color: white;
 `;
 
 const ContentItem = ({ item }) => (
   <Card>
     <Image src={item.imagePath} alt={item.title} />
     <Content>
-      <Title>{item.title}</Title>
-      <Creator>By {item.creator}</Creator>
+      <div>
+        <Title>{item.title}</Title>
+        <Creator>By {item.creator}</Creator>
+      </div>
+      <div style={{alignContent: "center"}}>
       <Price $type={item.pricingOption}>
         {item.pricingOption === 0
           ? `$${item.price.toFixed(2)}`
@@ -54,6 +60,7 @@ const ContentItem = ({ item }) => (
           ? "Free"
           : "View Only"}
       </Price>
+      </div>
     </Content>
   </Card>
 );

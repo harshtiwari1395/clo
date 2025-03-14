@@ -1,5 +1,5 @@
 // src/App.js
-import React, { useEffect, useMemo, useCallback } from "react";
+import React, { useEffect, useMemo, useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
@@ -15,29 +15,136 @@ import ContentItem from "./components/ContentItem";
 import "./styles.css";
 
 // Styled components
-const Grid = styled.div`
-  display: grid;
-  gap: 20px;
-  padding: 20px;
-  grid-template-columns: repeat(4, 1fr);
+const AppContainer = styled.div`
+  background-color: #121212;
+  color: #ffffff;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+`;
 
-  @media (max-width: 1200px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  @media (max-width: 480px) {
-    grid-template-columns: 1fr;
+const TopBar = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #1e1e1e;
+  border-bottom: 1px solid #333;
+
+  h2 {
+    color: #00d8ff;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
   }
 `;
 
-const FilterContainer = styled.div`
+const SearchBarContainer = styled.div`
   display: flex;
-  gap: 15px;
-  padding: 20px;
-  background: #f5f5f5;
+  align-items: center;
+
+  input {
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    background-color: #2b2b2b;
+    color: #ddd;
+    width: 300px;
+
+    &::placeholder {
+      color: #777;
+      font-size: 0.9rem;
+      font-style: italic;
+    }
+  }
+`;
+
+const FilterSection = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   flex-wrap: wrap;
+  padding: 20px;
+  border-bottom: 1px solid #333;
+`;
+
+const FilterGroup = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  label {
+    color: #ccc;
+    margin-right: 15px;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+
+    input[type="checkbox"] {
+      margin-right: 5px;
+      accent-color: #007bff;
+      width: 18px;
+      height: 18px;
+    }
+
+    span {
+      font-size: 0.9rem;
+    }
+  }
+`;
+
+const ResetButton = styled.button`
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  background-color: #555;
+  color: #fff;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #777;
+  }
+`;
+
+
+
+const SortSection = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  label {
+    color: #ddd;
+    font-size: 0.9rem;
+  }
+
+  select {
+    padding: 6px 10px;
+    border-radius: 4px;
+    border: none;
+    background-color: #2b2b2b;
+    color: #ddd;
+  }
+`;
+
+const PricingSliderContainer = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    .slider-labels {
+        display: flex;
+        justify-content: space-between;
+        width: 200px;
+        color: #ccc;
+        font-size: 0.8rem;
+    }
+`;
+
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
 `;
 
 const App = () => {
@@ -46,15 +153,14 @@ const App = () => {
   const { pricingFilters, searchQuery, visibleItems, data } = useSelector(
     (state) => state.app
   );
-  console.log({ pricingFilters, searchQuery, visibleItems, data });
-  
+
   // Initialize filters from URL params
   useEffect(() => {
     const pricing = searchParams.get("pricing");
     const search = searchParams.get("search");
 
     if (pricing) {
-      dispatch(setPricingFilters(pricing.split(",").map(n=> Number(n))));
+      dispatch(setPricingFilters(pricing.split(",").map(Number)));
     }
     if (search) {
       dispatch(setSearchQuery(search));
@@ -136,32 +242,57 @@ const App = () => {
     },
     [dispatch]
   );
-  console.log({filteredItems});
-  return (
-    <div>
-      <FilterContainer>
-        <div className="filter-group">
-          {["Paid", "Free", "View Only"].map((option, index) => (
-            <label key={option}>
-              <input
-                type="checkbox"
-                checked={pricingFilters.includes(index)}
-                onChange={() => handleFilterClick(index)}
-              />
-              {option}
-            </label>
-          ))}
-          <button onClick={handleResetFilters}>Reset Filters</button>
-        </div>
 
-        <input
-          type="text"
-          placeholder="Search creators or titles..."
-          value={searchQuery}
-          onChange={handleSearchChange}
-          className="search-input"
-        />
-      </FilterContainer>
+  return (
+    <AppContainer>
+      <TopBar>
+        <h2>CONNECT</h2>
+        <SearchBarContainer>
+          <input
+            type="text"
+            placeholder="Find the items you're looking for"
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
+        </SearchBarContainer>
+      </TopBar>
+
+      <FilterSection>
+        <FilterGroup>
+          <span> Pricing Option</span>
+          <label>
+            <input
+              type="checkbox"
+              checked={pricingFilters.includes(0)}
+              onChange={() => handleFilterClick(0)}
+            />
+            <span>Paid</span>
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={pricingFilters.includes(1)}
+              onChange={() => handleFilterClick(1)}
+            />
+            <span>Free</span>
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={pricingFilters.includes(2)}
+              onChange={() => handleFilterClick(2)}
+            />
+            <span>View Only</span>
+          </label>
+        </FilterGroup>
+        <ResetButton onClick={handleResetFilters}>RESET</ResetButton>
+        <SortSection>
+          <label>Sort By</label>
+          <select>
+            <option>Relevance</option>
+          </select>
+        </SortSection>
+      </FilterSection>
 
       <Grid>
         {filteredItems &&
@@ -169,7 +300,7 @@ const App = () => {
             .slice(0, visibleItems)
             .map((item) => <ContentItem key={item.id} item={item} />)}
       </Grid>
-    </div>
+    </AppContainer>
   );
 };
 
