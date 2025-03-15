@@ -11,7 +11,7 @@
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/clo.git
+   git clone https://github.com/harshtiwari1395/clo
    cd clo
    ```
 
